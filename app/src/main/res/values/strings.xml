@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">demo-imlib-android-v2</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string name="rc_notification_send">发来了</string>
+    <string name="rc_notification_msg">条消息</string>
+    <string name="rc_notification_contact">个联系人</string>
+    <string name="rc_notification_ticker_text">您有了一条新消息</string>
+</resources>
