@@ -1,0 +1,19 @@
+-keep class io.rong.imlib.App {
+    <init>();
+    void attachBaseContext(android.content.Context);
+}
+-keep class io.rong.imlib.MainActivity { <init>(); }
+-keep class io.rong.push.PushService { <init>(); }
+-keep class io.rong.push.CommandService { <init>(); }
+-keep class io.rong.push.PushReceiver { <init>(); }
+-keep class io.rong.imlib.HeartbeatReceiver { <init>(); }
+-keep class io.rong.imlib.ipc.RongService { <init>(); }
+-keep class io.rong.imlib.ReConnectService { <init>(); }
+-keep class io.rong.imlib.ConnectChangeReceiver { <init>(); }
+-keep class io.rong.imlib.ipc.PushMessageReceiver { <init>(); }
+-keep public class * extends android.app.backup.BackupAgent {
+    <init>();
+}
+-keep public class * extends java.lang.annotation.Annotation {
+    *;
+}
