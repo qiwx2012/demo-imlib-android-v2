@@ -38,7 +38,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
 
     //    public static final String TOKEN = "HtymJWYc8lTwfKgcAN9P57I6ZiT8q7s0UEaMPWY0lMw1SnA9yXU+KsOb5slbLWhxvJ6WgjQYA7h94DvkFpmc5g==0";//112
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final String TOKEN = "lEcUY+zv6Gsttx7LZTwIp7I6ZiT8q7s0UEaMPWY0lMy2r4sIE/dljFojy+DVUhhHywAjCeBAI/Q/Y/d4rPAK/w==";//119
+    public static final String TOKEN = "0XRSHouXpDpdfcbjpUXKyqxeVjCC83e72XBjxjbFuNDeOqR3P30ymwoyIQZThs0aAXt1zs928r3o89zxiRZbdg==";//12345
 
 
     public static RongIMClient mRongIMClient;
@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
     private Button button1;
     private Button button2;
     private Button button3;
-//    private Button button4;
+    //    private Button button4;
     private Button reqFriendButton;
     private Button profileNotificationButton;
     private Button commandeNotificationButton;
@@ -120,6 +120,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
                                 public void run() {
                                     Toast.makeText(MainActivity.this, "连接成功！", Toast.LENGTH_LONG).show();
                                     connectButton.setText("连接服务器成功!");
+                                    mRongIMClient.joinChatRoom("chatroom001", 10, new RongIMClient.OperationCallback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.e(TAG, "--joinChatRoom--onSuccess----chatroom001---");
+                                        }
+
+                                        @Override
+                                        public void onError(RongIMClient.ErrorCode errorCode) {
+                                            Log.e(TAG, "--joinChatRoom--onError----chatroom001---" + errorCode);
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -150,7 +161,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
 
                 TextMessage textMessage = TextMessage.obtain("这是消息。。。。。。端午节快乐！！！！发送时间:" + System.currentTimeMillis());
                 textMessage.setExtra("文字消息Extra");
-                textMessage.setContent("content");
                 sendMessage(textMessage);
 
                 break;
@@ -218,7 +228,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
 
     private void sendMessage(final MessageContent msg) {
         if (mRongIMClient != null) {
-            mRongIMClient.sendMessage(Conversation.ConversationType.SYSTEM, mUserIdTest, msg, null, new RongIMClient.SendMessageCallback() {
+            mRongIMClient.sendMessage(Conversation.ConversationType.PRIVATE, "12345", msg, null, null, new RongIMClient.SendMessageCallback() {
                 @Override
                 public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
                     Log.d("sendMessage", "----发发发发发--发送消息失败----ErrorCode----" + errorCode.getValue());
