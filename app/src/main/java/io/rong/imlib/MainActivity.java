@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import io.rong.imlib.message.GroupInvitationNotification;
+import io.rong.imlib.message.AgreedFriendRequestMessage;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.CommandNotificationMessage;
@@ -38,7 +38,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
 
     //    public static final String TOKEN = "HtymJWYc8lTwfKgcAN9P57I6ZiT8q7s0UEaMPWY0lMw1SnA9yXU+KsOb5slbLWhxvJ6WgjQYA7h94DvkFpmc5g==0";//112
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final String TOKEN = "0XRSHouXpDpdfcbjpUXKyqxeVjCC83e72XBjxjbFuNDeOqR3P30ymwoyIQZThs0aAXt1zs928r3o89zxiRZbdg==";//12345
+    public static final String TOKEN = "iE8FnsJDRPZa8zN6m3RQFV4PgRGJ4lryRR/tEnSS1d369tkxMOvibuU0SGJSZ+Q4Cp4acj43FRUPuryfFtVhkw==";//12345
 
 
     public static RongIMClient mRongIMClient;
@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
     private Button button1;
     private Button button2;
     private Button button3;
-    //    private Button button4;
+        private Button button4;
     private Button reqFriendButton;
     private Button profileNotificationButton;
     private Button commandeNotificationButton;
@@ -59,8 +59,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
     /**
      * 接收方Id,用于测试
      */
-    private String mUserIdTest = "26590";//114
-//    private String mUserIdTest = "26600";//119
+//    private String mUserIdTest = "26590";//114
+//    private String mUserIdTest = "26596";//117
+    private String mUserIdTest = "48918";//
+
 
 
     @Override
@@ -77,7 +79,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
         button1 = (Button) findViewById(android.R.id.button1);
         button2 = (Button) findViewById(android.R.id.button2);
         button3 = (Button) findViewById(android.R.id.button3);
-//        button4 = (Button) findViewById(R.id.group_invitation_notification);
+        button4 = (Button) findViewById(R.id.group_invitation_notification);
         reqFriendButton = (Button) findViewById(R.id.req_friend_notification);
         profileNotificationButton = (Button) findViewById(R.id.profile_notification);
         commandeNotificationButton = (Button) findViewById(R.id.command_notification);
@@ -87,7 +89,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
-//        button4.setOnClickListener(this);
+        button4.setOnClickListener(this);
         reqFriendButton.setOnClickListener(this);
         profileNotificationButton.setOnClickListener(this);
         commandeNotificationButton.setOnClickListener(this);
@@ -119,18 +121,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
                                 @Override
                                 public void run() {
                                     Toast.makeText(MainActivity.this, "连接成功！", Toast.LENGTH_LONG).show();
-                                    connectButton.setText("连接服务器成功!");
-                                    mRongIMClient.joinChatRoom("chatroom001", 10, new RongIMClient.OperationCallback() {
-                                        @Override
-                                        public void onSuccess() {
-                                            Log.e(TAG, "--joinChatRoom--onSuccess----chatroom001---");
-                                        }
+                                    try {
+                                        RongIMClient.registerMessageType(AgreedFriendRequestMessage.class);
 
-                                        @Override
-                                        public void onError(RongIMClient.ErrorCode errorCode) {
-                                            Log.e(TAG, "--joinChatRoom--onError----chatroom001---" + errorCode);
-                                        }
-                                    });
+                                    } catch (AnnotationNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+                                    connectButton.setText("连接服务器成功!");
+
                                 }
                             });
                         }
@@ -186,14 +184,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
                 });
 
                 break;
-//            case R.id.group_invitation_notification:
-//
-//                GroupInvitationNotification group = new GroupInvitationNotification(mUserIdTest, "张三邀请你加入xxx群");
-//                group.setMessage("张三邀请你加 PushContent");
-//                sendMessage(group);
-//
-//                break;
+            case R.id.group_invitation_notification:
+
+                AgreedFriendRequestMessage group = new AgreedFriendRequestMessage(mUserIdTest, "张三想加你为好友");
+                group.setMessage("张三想加你为好友");
+                sendMessage(group);
+                break;
             case R.id.req_friend_notification://联系人（好友）操作通知消息
+
 
                 ContactNotificationMessage contact = ContactNotificationMessage.obtain(ContactNotificationMessage.CONTACT_OPERATION_REQUEST, mUserId, mUserIdTest, "请加我好友");
                 contact.setExtra("I'm Bob");
@@ -201,6 +199,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
 
                 break;
             case R.id.profile_notification://资料变更通知消息
+
 
                 ProfileNotificationMessage profile = ProfileNotificationMessage.obtain(mUserIdTest, "资料变更数据");
                 profile.setExtra("资料变更通知消息");
@@ -228,7 +227,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
 
     private void sendMessage(final MessageContent msg) {
         if (mRongIMClient != null) {
-            mRongIMClient.sendMessage(Conversation.ConversationType.PRIVATE, "12345", msg, null, null, new RongIMClient.SendMessageCallback() {
+            mRongIMClient.sendMessage(Conversation.ConversationType.SYSTEM, mUserIdTest, msg, null, null, new RongIMClient.SendMessageCallback() {
                 @Override
                 public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
                     Log.d("sendMessage", "----发发发发发--发送消息失败----ErrorCode----" + errorCode.getValue());
@@ -249,8 +248,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Hand
                     } else if (msg instanceof LocationMessage) {
                         LocationMessage location = (LocationMessage) msg;
                         Log.d("sendMessage", "VoiceMessage--发发发发发--发送了一条【语音消息】---uri--" + location.getPoi());
-                    } else if (msg instanceof GroupInvitationNotification) {
-                        GroupInvitationNotification groupInvitationNotification = (GroupInvitationNotification) msg;
+                    } else if (msg instanceof AgreedFriendRequestMessage) {
+                        AgreedFriendRequestMessage groupInvitationNotification = (AgreedFriendRequestMessage) msg;
                         Log.d("sendMessage", "VoiceMessage--发发发发发--发送了一条【群组邀请消息】---message--" + groupInvitationNotification.getMessage());
                     } else if (msg instanceof ContactNotificationMessage) {
                         ContactNotificationMessage mContactNotificationMessage = (ContactNotificationMessage) msg;

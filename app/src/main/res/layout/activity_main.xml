@@ -41,12 +41,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
         <!--android:text=" "-->
-    <!--<Button-->
-        <!--android:id="@+id/group_invitation_notification"-->
-        <!--android:text="群组操作通知消息"-->
-        <!--android:layout_margin="20dp"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content" />-->
+    <Button
+        android:id="@+id/group_invitation_notification"
+        android:text="自定义消息测试"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
         <Button

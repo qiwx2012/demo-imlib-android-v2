@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.IOException;
+
+import io.rong.imlib.message.AgreedFriendRequestMessage;
 import io.rong.imlib.message.GroupInvitationNotification;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
@@ -159,7 +161,12 @@ public class DemoContext {
                 InformationNotificationMessage mInformationNotificationMessage = (InformationNotificationMessage) message.getContent();
                 Log.d("onReceived", "InformationNotificationMessage--收收收收--接收到一条【小灰条消息】-----" + mInformationNotificationMessage.getMessage() + ",getName:" + mInformationNotificationMessage.getExtra());
 
+            }else if (message.getContent() instanceof AgreedFriendRequestMessage) {
+                AgreedFriendRequestMessage mAgreedFriendRequestMessage = (AgreedFriendRequestMessage) message.getContent();
+                Log.d("onReceived", "AgreedFriendRequestMessage--收收收收--接收到一条【加好友消息】-----" + mAgreedFriendRequestMessage.getMessage() );
+
             }
+
 
 
             return false;

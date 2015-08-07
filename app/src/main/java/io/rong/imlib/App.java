@@ -1,7 +1,8 @@
 package io.rong.imlib;
 
 import android.app.Application;
-import io.rong.imlib.message.GroupInvitationNotification;
+
+import io.rong.imlib.message.DemoCommandNotificationMessage;
 
 /**
  * Created by Bob on 15/6/5.
@@ -17,13 +18,7 @@ public class App extends Application {
          */
         RongIMClient.init(this);
 
-//        try {
-//            //注册自定义消息类型
-//            RongIMClient.registerMessageType(GroupInvitationNotification.class);
-//
-//        } catch (AnnotationNotFoundException e) {
-//            e.printStackTrace();
-//        }
+
 
         DemoContext.getInstance().init(this);
 
